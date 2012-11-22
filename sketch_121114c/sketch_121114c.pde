@@ -1,21 +1,59 @@
 float SPEED = 0.01; //global speed
 float counter = 0.0; //keep global for all planets to use
-Planet testPlanet = new Planet(400, 400, 80,50, 10); //originx, originy, size, radius, speed
-Satellite satellite = new Satellite(testPlanet, 30, 60, -15); //target, size, radius, speed
+//Planet testPlanet = new Planet(400, 400, 80,50, 10); //originx, originy, size, radius, speed
+//Satellite satellite = new Satellite(testPlanet, 30, 200, -5); //target, size, radius, speed
+Planet sun = new Planet(450, 450, 90, 0, 0);
+Planet mercury = new Planet(450, 450, 20, 50, 4);
+Planet venus = new Planet(450, 450, 40, 125, 1);
+Planet earth = new Planet(450, 450, 30, 150, -3);
+Planet mars = new Planet(450, 450, 20, 237, 5);
+Planet jupiter = new Planet(450, 450, 100, 250, -1);
+Planet saturn = new Planet(450, 450, 100, 350, 1);
+Planet uranus = new Planet(450, 450, 10, 400, 7);
+Planet neptune = new Planet(450, 450, 10, 425, 5);
+Satellite moon = new Satellite(earth, 4, 10, 1);
 
 void setup(){
-  size(800, 800);
+  size(900, 900);
+  sun.setColor(255, 255, 0);
+  mercury.setColor(170, 170, 170);
+  venus.setColor(171,229,0);
+  earth.setColor(0, 159, 255);
+  mars.setColor(255, 0, 0);
+  jupiter.setColor(255, 153, 0);
+  saturn.setColor(178, 0, 255);
+  uranus.setColor(0, 255, 240);
+  neptune.setColor(0,6,255);
+  
 }
 
 void draw(){
-  background(211);
+  //background(0);
+  fill(0, 0, 0, 10);
+  rect(0, 0, 900, 900);
   
   //update each planet
-  testPlanet.update();
-  testPlanet.display();
+  sun.update();
+  mercury.update();
+  venus.update();
+  earth.update();
+  mars.update();
+  jupiter.update();
+  saturn.update();
+  uranus.update();
+  neptune.update();
   
-  satellite.update();
-  satellite.display();
+  //display each planet
+  sun.display();
+  mercury.display();
+  venus.display();
+  earth.display();
+  mars.display();
+  jupiter.display();
+  saturn.display();
+  uranus.display();
+  neptune.display();
+  
   counter += SPEED;
 }
 
@@ -28,6 +66,7 @@ class Planet{
   int size;
   int radius;
   float speed;
+  color pColor;
   
   Planet(){
     //default constructor. It seems like this is necessary to extend the class
@@ -38,10 +77,12 @@ class Planet{
     originy = _originy;
     radius = _radius;
     size = _size;
-    speed = _speed;   
+    speed = _speed;
+    pColor = getRandomColor();   
   } 
   
   void display(){
+    fill(pColor);
     ellipse(x,y, size, size);
   }
   
@@ -58,6 +99,9 @@ class Planet{
     pos[0] = x;
     pos[1] = y;
     return pos; //return x, y in an array
+  }
+  void setColor(int r, int g, int b) {
+    pColor = color(r, g, b);
   }  
 }
 
@@ -71,6 +115,7 @@ class Satellite extends Planet{
     size = _size;
     speed = _speed;
     target= _target;   
+    pColor = getRandomColor();
   }  
  
  void update(){
@@ -80,4 +125,11 @@ class Satellite extends Planet{
     x = int(originx + cos(counter * speed) * radius);
     y = int(originy + sin(counter * speed) * radius);
  } 
+}
+
+color getRandomColor(){
+    int r = int(random(0, 255));
+    int g = int(random(0, 255));
+    int b = int(random(0, 255));    
+    return color(r, g, b);
 }
