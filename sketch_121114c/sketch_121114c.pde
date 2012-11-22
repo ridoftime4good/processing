@@ -1,8 +1,7 @@
 float SPEED = 0.04; //global speed
 float counter = 0.0; //keep global for all planets to use
-Planet testPlanet = new Planet(400, 400, 80, 30);
-//Satellite satellite = new Satellite(testPlanet, 5, 10.0);
-
+Planet testPlanet = new Planet(400, 400, 80,50, 10); //originx, originy, size, radius, speed
+Satellite satellite = new Satellite(testPlanet, 30, 100, 10); //target, size, radius, speed
 
 void setup(){
   size(800, 800);
@@ -15,41 +14,47 @@ void draw(){
   testPlanet.update();
   testPlanet.display();
   
-  //satellite.update();
-  //satellite.display();
+  satellite.update();
+  satellite.display();
   counter += SPEED;
 }
 
+/* Planet Class */
 class Planet{
-  int x;
+  int x; //current position
   int y;
+  int originx; //origin
+  int originy;
   int size;
   int radius;
   float speed;
   Planet target;  
   
   Planet(){
-    //placeholder
+    //default constructor. It seems like this is necessary to extend the class
   }
   
-  Planet(int _x, int _y, int _size, float _speed){
-    x = _x; //origin if no planet available
-    y = _y; //same as above
+  Planet(int _originx, int _originy, int _size, int _radius, float _speed){
+    originx = _originx;
+    originy = _originy;
+    radius = _radius;
     size = _size;
     speed = _speed;   
   } 
   
   void display(){
-    ellipse(x + cos(counter) * size,y + sin(counter) * size, size, size);
+    ellipse(x,y, size, size);
   }
   
   void update(){
     //rotate around the origin
-    //check if planet is set, and if so, set X to target.getPosition()[0], y to target.getPosition()[1]
+    x = int(originx + cos(counter) * radius);
+    y = int(originy + sin(counter) * radius);
+    
+    //this is where a local counter should be updated with the local speed
   }
 
   int[] getPosition(){//use this function so the planets can get their positions
-    println("fired");
     int[] pos = new int[2];
     pos[0] = x;
     pos[1] = y;
@@ -57,17 +62,23 @@ class Planet{
   }  
 }
 
+
+/* Satellite class */
 class Satellite extends Planet{
-  Satellite(Planet target, int _size, float _speed){
-     x = target.getPosition()[0];
-     y = target.getPosition()[1];
-     size = _size;
-     speed = _speed;
+  Planet target;
+ 
+ Satellite(Planet _target, int _size, int _radius, float _speed){
+    radius = _radius;
+    size = _size;
+    speed = _speed;
+    target= _target;   
   }  
-  
-  void display(){
-    println("target x = " + target.getPosition()[0] + ", target y = " + target.getPosition()[1]);
-      x = target.getPosition()[0];
-      y = target.getPosition()[1];
-  }
+ 
+ void update(){
+   originx = target.getPosition()[0];
+   originy = target.getPosition()[1];
+   
+    x = int(originx + cos(counter) * radius);
+    y = int(originy + sin(counter) * radius);
+ } 
 }
