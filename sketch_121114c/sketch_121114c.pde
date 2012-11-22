@@ -1,7 +1,7 @@
-float SPEED = 0.04; //global speed
+float SPEED = 0.01; //global speed
 float counter = 0.0; //keep global for all planets to use
 Planet testPlanet = new Planet(400, 400, 80,50, 10); //originx, originy, size, radius, speed
-Satellite satellite = new Satellite(testPlanet, 30, 100, 10); //target, size, radius, speed
+Satellite satellite = new Satellite(testPlanet, 30, 60, -15); //target, size, radius, speed
 
 void setup(){
   size(800, 800);
@@ -28,7 +28,6 @@ class Planet{
   int size;
   int radius;
   float speed;
-  Planet target;  
   
   Planet(){
     //default constructor. It seems like this is necessary to extend the class
@@ -48,8 +47,8 @@ class Planet{
   
   void update(){
     //rotate around the origin
-    x = int(originx + cos(counter) * radius);
-    y = int(originy + sin(counter) * radius);
+    x = int(originx + cos(counter * speed) * radius);
+    y = int(originy + sin(counter * speed) * radius);
     
     //this is where a local counter should be updated with the local speed
   }
@@ -78,7 +77,7 @@ class Satellite extends Planet{
    originx = target.getPosition()[0];
    originy = target.getPosition()[1];
    
-    x = int(originx + cos(counter) * radius);
-    y = int(originy + sin(counter) * radius);
+    x = int(originx + cos(counter * speed) * radius);
+    y = int(originy + sin(counter * speed) * radius);
  } 
 }
